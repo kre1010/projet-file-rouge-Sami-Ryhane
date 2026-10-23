@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -97,40 +98,42 @@ func (player *Joueur) initWord() error {
 }
 
 func (player *Joueur) initStar() {
-	for player.Essais <= 6 {
+	for player.Essais <= 6 && strings.Contains(strings.Join(player.MotCache, ""), "_") {
 		fmt.Println(etapesPendu[player.Essais], '\n')
 		fmt.Println("Essais:", player.Essais)
 		fmt.Println("Mot :", player.MotCache)
 		fmt.Println("indiquer une lettre")
 		var inputLetter string
 		fmt.Scanln(&inputLetter)
-		if len(inputLetter) > 1{
+		if len(inputLetter) > 1 {
 			if inputLetter == player.Mot {
 				fmt.Println("Vous avez trouvé le mot")
-				
+
 			}
 		}
-		var indexAllLetter []int
+		if slices.Contains(player.Lettres, inputLetter) {
+			fmt.Println("La lettre est déjà indiqué, veuillez indiquer une autre lettre")
+			continue
+		}
 		player.Lettres = append(player.Lettres, inputLetter)
-		if strings.Contains(player.Mot, inputLetter) == true {
+
+		if strings.Contains(player.Mot, inputLetter) {
 			for index, value := range player.Mot {
 				if string(value) == inputLetter {
-					indexAllLetter = append(indexAllLetter, index)
-				} else if strings.Contains(player.MotCache[index], string(value)){
-					fmt.Println("Cette lettre est déjà présente sur le mot caché")
+					player.MotCache[index] = string(value)
 				}
 			}
-			for _, v := range indexAllLetter {
-				player.MotCache[v] = inputLetter
-			}
-		} else if []player.MotCache == strings.Split(player.Mot,) {
-			fmt.Println("Vous avez trouver le mot !")
-			break
 		} else {
 			player.Essais += 1
 		}
+
 	}
-	fmt.Println("Vous avez perdu")
+
+	if !strings.Contains(strings.Join(player.MotCache, ""), "_") {
+		fmt.Println("Vous avez trouver le mot !")
+	} else {
+		fmt.Println("Vous avez perdu")
+	}
 }
 
 /* j.Mot = s
