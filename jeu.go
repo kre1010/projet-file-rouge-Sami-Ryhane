@@ -111,7 +111,6 @@ func (player *Joueur) initStar() {
 			}
 		}
 		var indexAllLetter []int
-		var verifyWin string
 		player.Lettres = append(player.Lettres, inputLetter)
 		if strings.Contains(player.Mot, inputLetter) == true {
 			for index, value := range player.Mot {
@@ -124,10 +123,7 @@ func (player *Joueur) initStar() {
 			for _, v := range indexAllLetter {
 				player.MotCache[v] = inputLetter
 			}
-			for _,v2 := range player.MotCache {
-				verifyWin += v2
-			} 
-		} else if verifyWin == player.Mot {
+		} else if []player.MotCache == strings.Split(player.Mot,) {
 			fmt.Println("Vous avez trouver le mot !")
 			break
 		} else {
